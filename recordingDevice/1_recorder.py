@@ -2,7 +2,7 @@ import subprocess
 import os
 import time
 
-BASE_DIR = "/home/omg/raw" # Raw folder path
+BASE_DIR = "/home/omg/raw"
 os.makedirs(BASE_DIR, exist_ok=True)
 
 def start_recording():
@@ -14,13 +14,13 @@ def start_recording():
         "-loglevel", "warning",
         "-thread_queue_size", "4096",
         
-        # Input 
+        # --- GİRİŞ (INPUT) BÖLÜMÜ ---
         "-f", "alsa", 
-        "-i", "plughw:2,0", # Soundcard
+        "-i", "plughw:2,0", # Cihazdan sesi kendi varsayılan ayarlarıyla (natürel) alıyoruz
         
-        # Output
-        "-ac", "1",
-        "-ar", "8000",
+        # --- ÇIKIŞ (OUTPUT) BÖLÜMÜ ---
+        "-ac", "1",         # Aldığımız sesi yazılımsal olarak Mono'ya çeviriyoruz
+        "-ar", "8000",      # Aldığımız sesi yazılımsal olarak 8000 Hz'e düşürüyoruz
         "-c:a", "pcm_s16le",
         "-f", "segment",
         "-segment_time", "300",
@@ -30,14 +30,14 @@ def start_recording():
         output_pattern
     ]
     
-    print(f"[{time.ctime()}] Recording has been started..")
+    print(f"[{time.ctime()}] 8kHz Kesintisiz Buffer Korumalı Kayıt başlatıldı...")
     subprocess.run(cmd)
 
 while True:
     try:
         start_recording()
     except Exception as e:
-        print(f"[{time.ctime()}] Unexpected Error: {e}")
+        print(f"[{time.ctime()}] Beklenmeyen Hata: {e}")
     
-    print("System restarts in 2 seconds..")
+    print("Sistem 2 saniye içinde yeniden başlatılıyor...")
     time.sleep(2)
